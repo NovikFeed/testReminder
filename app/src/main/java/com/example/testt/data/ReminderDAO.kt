@@ -1,8 +1,9 @@
-package com.example.testt.data.model
+package com.example.testt.data
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import com.example.testt.data.model.ReminderDBO
 
 @Dao
 interface ReminderDAO {
