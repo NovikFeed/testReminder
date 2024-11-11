@@ -2,7 +2,7 @@ package com.example.testt.dependencyInjection
 
 import android.app.Application
 import androidx.room.Room
-import com.example.testt.data.model.ReminderDatabase
+import com.example.testt.data.ReminderDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
