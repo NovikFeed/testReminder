@@ -16,5 +16,5 @@ data class ReminderDBO(
     val year: Int,
     val hour: Int,
     val minute: Int,
-    val repeat: Int,
+    val repeat: String,
 ) {}
