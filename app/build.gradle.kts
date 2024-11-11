@@ -75,4 +75,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     runtimeOnly(libs.androidx.manager.worker)
     implementation(libs.androidx.jetpack.navigation)
+    implementation(libs.androidx.jetpack.room)
 }
