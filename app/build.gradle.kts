@@ -1,6 +1,10 @@
+import kotlin.script.experimental.jvm.util.classpathFromClass
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -73,7 +77,20 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
     runtimeOnly(libs.androidx.manager.worker)
+
     implementation(libs.androidx.jetpack.navigation)
+
     implementation(libs.androidx.jetpack.room)
+
+    implementation(libs.google.dagger.hilt)
+    annotationProcessor(libs.google.dagger.hilt.compiler)
+    kapt(libs.google.dagger.hilt.compiler)
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation)
+
+
+
+
 }
