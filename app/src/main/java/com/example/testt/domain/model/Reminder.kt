@@ -7,8 +7,11 @@ data class Reminder(
     val uniqueKey: String,
     val title: String,
     val message: String,
-    val date: Date,
-    val time : Time,
+    val day: Int,
+    val month : Int,
+    val year : Int,
+    val hour : Int,
+    val minute : Int,
     val repeat : Int,
 
 ) {}
