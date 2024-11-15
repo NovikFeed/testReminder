@@ -6,7 +6,6 @@ import com.example.testt.domain.model.Reminder
 fun Reminder.toReminderDBO(): ReminderDBO {
     return ReminderDBO(
         uniqueKey = uniqueKey,
-        message = message,
         day = day,
         minute = minute,
         hour = hour,
@@ -20,7 +19,6 @@ fun Reminder.toReminderDBO(): ReminderDBO {
 fun ReminderDBO.toReminder(): Reminder {
     return Reminder(
         uniqueKey = uniqueKey,
-        message = message,
         day = day,
         minute = minute,
         hour = hour,

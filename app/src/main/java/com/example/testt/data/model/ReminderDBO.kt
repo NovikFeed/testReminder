@@ -10,7 +10,6 @@ data class ReminderDBO(
     @PrimaryKey
     val uniqueKey: String,
     val title: String,
-    val message: String,
     val day: Int,
     val month: Int,
     val year: Int,
