@@ -40,9 +40,8 @@ import com.example.testt.navigation.Screens
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun HomeScreen(reminders: Flow<List<Reminder>>, navController: NavHostController) {
-    val reminderList by reminders.collectAsState(emptyList())
-    if (reminderList.isNotEmpty()) {
+fun HomeScreen(reminders: List<Reminder>, navController: NavHostController) {
+    if (reminders.isNotEmpty()) {
 
     } else {
         EmptyListScreen(navController)
