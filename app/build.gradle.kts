@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.testt"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -79,10 +79,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     runtimeOnly(libs.androidx.manager.worker)
+    implementation(libs.androidx.hilt.woker)
 
     implementation(libs.androidx.jetpack.navigation)
 
-    implementation(libs.androidx.jetpack.room)
+    implementation(libs.androidx.room.database)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
     implementation(libs.google.dagger.hilt)
     annotationProcessor(libs.google.dagger.hilt.compiler)
