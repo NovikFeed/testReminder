@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -16,14 +15,12 @@ import com.example.testt.ui.theme.TestTheme
 import androidx.navigation.compose.rememberNavController
 import android.Manifest
 import android.widget.Toast
-import androidx.activity.viewModels
 import com.example.testt.navigation.Screens
 import com.example.testt.viewModels.ReminderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val myViewModel: ReminderViewModel by viewModels()
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -58,12 +55,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainContent() {
     val viewModel = hiltViewModel<ReminderViewModel>()
-    val reminders = viewModel.remindersList.collectAsState().value
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Screens.HomeScreen.rout) {
         composable(Screens.HomeScreen.rout) {
-            HomeScreen(reminders = reminders, navController)
+            HomeScreen(viewModel, navController)
         }
         composable(Screens.AddTaskScreen.rout) {
             AddTaskScreen(navController, viewModel)

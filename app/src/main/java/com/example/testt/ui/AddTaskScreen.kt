@@ -83,7 +83,10 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
-                    onClick = { navController.navigate(Screens.HomeScreen.rout) },
+                    onClick = {
+                        navController.popBackStack()
+                        navController.navigate(Screens.HomeScreen.rout)
+                              },
                     shape = CircleShape,
                     modifier = Modifier.size(38.dp),
                     contentPadding = PaddingValues(0.dp),

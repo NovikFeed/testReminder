@@ -1,17 +1,21 @@
 package com.example.testt.ui
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -37,14 +41,15 @@ import androidx.navigation.NavHostController
 import com.example.testt.R
 import com.example.testt.domain.model.Reminder
 import com.example.testt.navigation.Screens
-import kotlinx.coroutines.flow.Flow
+import com.example.testt.ui.components.ReminderWindow
+import com.example.testt.viewModels.ReminderViewModel
 
 @Composable
-fun HomeScreen(reminders: List<Reminder>, navController: NavHostController) {
-    if (reminders.isNotEmpty()) {
-
-    } else {
-        EmptyListScreen(navController)
+fun HomeScreen(remindersViewModel: ReminderViewModel, navController: NavHostController) {
+    val reminderList by remindersViewModel.remindersList.collectAsState()
+    when{
+        reminderList.isEmpty() -> EmptyListScreen(navController)
+        else -> ReminderListScreen(reminderList, navController, remindersViewModel)
     }
 }
 
@@ -76,10 +81,13 @@ fun EmptyListScreen(navController: NavHostController) {
             ) {
                 FloatingActionButton(
                     onClick = { navController.navigate(Screens.AddTaskScreen.rout) },
-                    modifier = Modifier.size(39.dp).padding(end = 0.dp).zIndex(2f),
+                    modifier = Modifier
+                        .size(39.dp)
+                        .padding(end = 0.dp)
+                        .zIndex(2f),
                     containerColor = Color(0xFF007AFF),
                     contentColor = Color.White
-                ){
+                ) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "add")
                 }
                 Button(
@@ -118,6 +126,61 @@ fun EmptyListScreen(navController: NavHostController) {
                     painter = painterResource(id = R.drawable.background),
                     contentDescription = "background"
                 )
+            }
+        }
+    )
+}
+
+@Composable
+fun ReminderListScreen(
+    reminders: List<Reminder>,
+    navController: NavHostController,
+    remindersViewModel: ReminderViewModel
+) {
+    Scaffold(
+        modifier =Modifier.fillMaxSize(),
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.09f),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.padding(end = 51.dp),
+                    fontSize = 32.sp,
+                    text = "TestReminder",
+                    fontFamily = FontFamily(Font(R.font.coolvetica))
+                )
+
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .fillMaxHeight(0.09f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                FloatingActionButton(
+                    onClick = { navController.navigate(Screens.AddTaskScreen.rout) },
+                    modifier = Modifier
+                        .size(39.dp)
+                        .padding(end = 0.dp)
+                        .zIndex(2f),
+                    containerColor = Color(0xFF007AFF),
+                    contentColor = Color.White
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "add")
+                }
+            }
+        },
+        content = { paddingValues ->
+            LazyColumn(contentPadding = paddingValues, modifier = Modifier.fillMaxSize()) {
+                items(reminders){reminder ->
+                    ReminderWindow(reminder = reminder, remindersViewModel)
+                    Spacer(modifier = Modifier.padding(10.dp))
+                }
             }
         }
     )
