@@ -1,5 +1,6 @@
 package com.example.testt.ui
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +56,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.example.testt.R
+import com.example.testt.domain.model.Reminder
 import com.example.testt.navigation.Screens
 import com.example.testt.ui.components.TextWithIcon
 import com.example.testt.ui.features.bottomBorder
@@ -61,7 +64,13 @@ import com.example.testt.viewModels.ReminderViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel) {
+fun AddTaskScreen(
+    navController: NavHostController,
+    viewModel: ReminderViewModel,
+    editing: Boolean = false
+) {
+    val reminder by viewModel.reminderByKey.collectAsState()
+    Log.d("cord", reminder.toString())
     val title = remember { mutableStateOf("") }
     val hour = remember { mutableStateOf("") }
     val minute = remember { mutableStateOf("") }
@@ -71,6 +80,15 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
     val options = listOf("Once", "Daily", "Mon to Fri")
     var expanded by remember { mutableStateOf(false) }
     var repeat by remember { mutableStateOf(options[0]) }
+    if (editing) {
+        title.value = reminder.title
+        hour.value = reminder.hour.toString()
+        minute.value = reminder.minute.toString()
+        day.value = reminder.day.toString()
+        month.value = reminder.month.toString()
+        year.value = reminder.year.toString()
+        repeat = reminder.repeat
+    }
 
     Scaffold(topBar = {
         Column {
@@ -86,7 +104,7 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                     onClick = {
                         navController.popBackStack()
                         navController.navigate(Screens.HomeScreen.rout)
-                              },
+                    },
                     shape = CircleShape,
                     modifier = Modifier.size(38.dp),
                     contentPadding = PaddingValues(0.dp),
@@ -107,15 +125,29 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                 )
                 Button(
                     onClick = {
-                        viewModel.upsertReminders(
-                            title.value,
-                            hour.value.toInt(),
-                            minute.value.toInt(),
-                            day.value.toInt(),
-                            month.value.toInt(),
-                            year.value.toInt(),
-                            repeat
-                        )
+                        if (editing) {
+                            viewModel.updateReminder(
+                                reminder.uniqueKey,
+                                title.value,
+                                hour.value.toInt(),
+                                minute.value.toInt(),
+                                day.value.toInt(),
+                                month.value.toInt(),
+                                year.value.toInt(),
+                                repeat
+                            )
+                        } else {
+                            viewModel.upsertReminders(
+                                title.value,
+                                hour.value.toInt(),
+                                minute.value.toInt(),
+                                day.value.toInt(),
+                                month.value.toInt(),
+                                year.value.toInt(),
+                                repeat
+                            )
+                        }
+
                         title.value = ""
                         hour.value = ""
                         minute.value = ""
@@ -219,7 +251,7 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                                     onValueChange = {
                                         if (it == "") {
                                             hour.value = it
-                                        } else if(it != "," && it != "."){
+                                        } else if (it != "," && it != ".") {
                                             if (it.toInt() in 0..23) hour.value = it
                                         }
                                     },
@@ -251,7 +283,7 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                                     onValueChange = {
                                         if (it == "") {
                                             minute.value = it
-                                        } else if(it != "," && it != ".") {
+                                        } else if (it != "," && it != ".") {
                                             if (it.toInt() in 0..59) minute.value = it
                                         }
                                     },
@@ -288,7 +320,7 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                                     onValueChange = {
                                         if (it == "") {
                                             day.value = it
-                                        } else if(it != "," && it != ".") {
+                                        } else if (it != "," && it != ".") {
                                             if (it.toInt() in 0..30) day.value = it
                                         }
                                     },
@@ -321,7 +353,7 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                                     onValueChange = {
                                         if (it == "") {
                                             month.value = it
-                                        } else if(it != "," && it != ".") {
+                                        } else if (it != "," && it != ".") {
                                             if (it.toInt() in 1..12) month.value = it
                                         }
                                     },
@@ -357,7 +389,7 @@ fun AddTaskScreen(navController: NavHostController, viewModel: ReminderViewModel
                                     onValueChange = {
                                         if (it == "") {
                                             year.value = it
-                                        } else if(it != "," && it != ".") {
+                                        } else if (it != "," && it != ".") {
                                             if (it.toInt() in 1..2030) year.value = it
                                         }
                                     },

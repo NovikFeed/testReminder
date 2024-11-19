@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
@@ -41,7 +42,10 @@ class WorkerRepository @Inject constructor(
             .setInitialDelay(delay, TimeUnit.MILLISECONDS)
             .build()
         try {
-            WorkManager.getInstance(context).enqueue(notificationForWorker)
+            WorkManager.getInstance(context).enqueueUniqueWork(
+                key,
+                ExistingWorkPolicy.REPLACE,
+                notificationForWorker)
 
         }
         catch (e : Exception){

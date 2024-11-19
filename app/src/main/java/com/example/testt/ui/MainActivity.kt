@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import com.example.testt.ui.theme.TestTheme
 import androidx.navigation.compose.rememberNavController
 import android.Manifest
+import android.util.Log
 import android.widget.Toast
 import com.example.testt.navigation.Screens
 import com.example.testt.viewModels.ReminderViewModel
@@ -63,6 +64,10 @@ fun MainContent() {
         }
         composable(Screens.AddTaskScreen.rout) {
             AddTaskScreen(navController, viewModel)
+        }
+        composable("${Screens.EditTaskScreen.rout}/{reminderId}"){backStackEntry ->
+            viewModel.getReminder(backStackEntry.arguments?.getString("reminderId")!!)
+            AddTaskScreen(navController, viewModel, true)
         }
     }
 }

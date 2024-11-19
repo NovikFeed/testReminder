@@ -49,3 +49,10 @@ fun Modifier.bottomBorder(strokeWidth: Dp, color: Color, widthEnd : Float, start
         }
     }
 )
+fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier) : Modifier {
+    return if (condition) {
+        then(modifier(Modifier))
+    } else {
+        this
+    }
+}

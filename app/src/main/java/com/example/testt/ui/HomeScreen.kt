@@ -1,6 +1,5 @@
 package com.example.testt.ui
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -42,14 +42,16 @@ import com.example.testt.R
 import com.example.testt.domain.model.Reminder
 import com.example.testt.navigation.Screens
 import com.example.testt.ui.components.ReminderWindow
+import com.example.testt.ui.features.conditional
 import com.example.testt.viewModels.ReminderViewModel
 
 @Composable
 fun HomeScreen(remindersViewModel: ReminderViewModel, navController: NavHostController) {
     val reminderList by remindersViewModel.remindersList.collectAsState()
+    val blur by remindersViewModel.blurOn.collectAsState()
     when{
         reminderList.isEmpty() -> EmptyListScreen(navController)
-        else -> ReminderListScreen(reminderList, navController, remindersViewModel)
+        else -> ReminderListScreen(blur, reminderList, navController, remindersViewModel)
     }
 }
 
@@ -133,12 +135,14 @@ fun EmptyListScreen(navController: NavHostController) {
 
 @Composable
 fun ReminderListScreen(
+    blur : Boolean,
     reminders: List<Reminder>,
     navController: NavHostController,
     remindersViewModel: ReminderViewModel
 ) {
     Scaffold(
-        modifier =Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize().conditional(blur){blur(3.dp)},
         topBar = {
             Row(
                 modifier = Modifier
@@ -178,7 +182,7 @@ fun ReminderListScreen(
         content = { paddingValues ->
             LazyColumn(contentPadding = paddingValues, modifier = Modifier.fillMaxSize()) {
                 items(reminders){reminder ->
-                    ReminderWindow(reminder = reminder, remindersViewModel)
+                    ReminderWindow(reminder = reminder, remindersViewModel, navController)
                     Spacer(modifier = Modifier.padding(10.dp))
                 }
             }

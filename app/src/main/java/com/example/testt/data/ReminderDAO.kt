@@ -2,6 +2,7 @@ package com.example.testt.data
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
 import com.example.testt.data.model.ReminderDBO
 import kotlinx.coroutines.flow.Flow
@@ -19,4 +20,7 @@ interface ReminderDAO {
 
     @Query("DELETE FROM ReminderDBO WHERE uniqueKey = :key ")
     suspend fun removeReminder(key: String)
+
+    @Update
+    suspend fun updateReminder(reminder: ReminderDBO)
 }
