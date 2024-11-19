@@ -31,4 +31,8 @@ class ReminderRepository @Inject constructor(
         reminderDatabase.reminderDAO.removeReminder(key)
     }
 
+    override suspend fun updateReminder(reminder: Reminder) {
+        reminderDatabase.reminderDAO.updateReminder(reminder.toReminderDBO())
+    }
+
 }

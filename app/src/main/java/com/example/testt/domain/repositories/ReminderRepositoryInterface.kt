@@ -9,4 +9,5 @@ interface ReminderRepositoryInterface {
     suspend fun getReminderByKey(key : String) : Flow<Reminder>
     suspend fun upsertReminder(reminder : Reminder)
     suspend fun removeReminder(key: String)
+    suspend fun updateReminder(reminder: Reminder)
 }
