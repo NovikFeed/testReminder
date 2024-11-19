@@ -2,9 +2,12 @@ package com.example.testt.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.example.testt.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -14,6 +17,22 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.alte_haas_grotesk)),
+        fontWeight = FontWeight(400),
+        fontSize = 22.sp,
+        lineHeight = 26.sp,
+        letterSpacing = 0.5.sp
+    ),
+    titleSmall = TextStyle(
+        fontSize = 20.sp,
+        lineHeight = 22.sp,
+        fontFamily = FontFamily(
+            Font(
+                R.font.alte_haas_grotesk
+            )
+        ),
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

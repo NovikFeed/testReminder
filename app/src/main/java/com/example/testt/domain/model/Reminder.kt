@@ -6,9 +6,11 @@ import java.util.Date
 data class Reminder(
     val uniqueKey: String,
     val title: String,
-    val message: String,
-    val date: Date,
-    val time : Time,
-    val repeat : Int,
+    val day: Int,
+    val month : Int,
+    val year : Int,
+    val hour : Int,
+    val minute : Int,
+    val repeat : String,
 
 ) {}
